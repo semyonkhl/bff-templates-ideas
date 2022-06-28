@@ -2,10 +2,9 @@ const express = require("express");
 const cors = require("cors");
 
 const ErrorHandler = require("./helpers/errorHandler");
-const api = require("../../idea3/src/workspace/routes/api");
+const api = require("./routes/api");
 
 const server = () => {
-
   const app = express();
 
   app.use(cors());
