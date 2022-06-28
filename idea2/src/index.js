@@ -1,8 +1,14 @@
-const { App } = require("./app");
-const app = new App();
-
+const appServer = require("./app");
 const PORT = process.env.PORT || 8000;
 
-app.app.listen(PORT, () => {
-  console.log(`listening on port ${PORT}`);
-});
+(() => {
+  try {
+    const app = appServer();
+    app.listen(PORT, () =>
+      console.log(`Listening on ${PORT} `)
+    );
+  } catch (e) {
+    console.error(e);
+    process.exit(0);
+  }
+})();

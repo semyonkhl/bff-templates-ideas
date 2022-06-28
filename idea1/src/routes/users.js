@@ -5,13 +5,13 @@ const addUser = require("../services/users/addUser");
 let userRouter = Router()
   .get("/", (req, res) => {
     getUsers()
-      .then((u) => res.status(200).json(u))
-      .catch((e) => res.status(500).json(e));
+      .then((users) => res.status(200).json(users))
+      .catch((err) => next(err));
   })
   .post("/:id", (req, res) => {
-    addUser(id)
-      .then((u) => res.status(200).json(u))
-      .catch((e) => res.status(500).json(e));
+    addUser(req.params.id)
+      .then((user) => res.status(200).json(user))
+      .catch((err) => next(err));
   });
 
 module.exports = { userRouter };

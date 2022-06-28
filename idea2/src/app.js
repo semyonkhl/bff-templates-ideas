@@ -1,21 +1,32 @@
-const cors = require("cors");
-const bodyParser = require("body-parser");
 const express = require("express");
-const { api } = require("./routes/api");
+const cors = require("cors");
 
-class App {
-  app;
+const ErrorHandler = require("../helpers/error-handler");
+const apiRouter = require("./routes");
+const { setupContainer } = require("../config/container");
 
-  constructor() {
-    this.app = express();
-    this.config();
-  }
+const server = () => {
+  setupContainer();
 
-  config() {
-    this.app.use(bodyParser.json());
-    this.app.use(cors());
-    this.app.use("/api", api);
-  }
-}
+  const app = express();
 
-module.exports = { App };
+  app.use(cors());
+  app.use(express.json());
+  app.use(express.urlencoded({ extended: true }));
+
+  app.use("/api", apiRouter(express.Router));
+
+  app.get("/", (_, res) => {
+    res.status(200).json({
+      data: {
+        message: "API is live!",
+      },
+    });
+  });
+
+  app.use(ErrorHandler);
+
+  return app;
+};
+
+module.exports = server;
